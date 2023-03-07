@@ -63,7 +63,11 @@ in
     };
     interactiveShellInit = ''
       fish_add_path $HOME/.emacs.d/bin/
-      # TODO if file extraInit file exists, source it.
+
+      # if file extraInit file exists, source it.
+      if test -e $HOME/.config/fish/extra.config
+          source $HOME/.config/fish/extra.config
+      end
     '';
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }

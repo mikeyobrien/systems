@@ -22,6 +22,11 @@
     # End Nix
     '';
 
+  fonts.fontDir.enable = true;
+  fonts.fonts = [
+    (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+  ];
+
   environment.shells = with pkgs; [
     bashInteractive
     zsh

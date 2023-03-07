@@ -3,10 +3,7 @@
 {
   homebrew = {
     enable = true;
-    casks = [
-      "1password"
-      "alfred"
-    ];
+    casks = [];
   };
 
   users.users.mobrienv = {
