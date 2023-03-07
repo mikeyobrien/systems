@@ -6,9 +6,7 @@ in
 {
   home.packages = with pkgs; [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
-    firefox
     jq
-    rofi
     fd
     ripgrep
     babashka
@@ -28,8 +26,8 @@ in
     rustc
     rust-analyzer
 
-    _1password
-    _1password-gui
+    git-crypt
+
   ] ++ (lib.optionals isLinux [
     ((emacsPackagesFor emacsUnstable).emacsWithPackages (epkgs:
       with epkgs;
@@ -41,8 +39,11 @@ in
         vterm
       ]
     ))
+    _1password
+    _1password-gui
+    firefox
+    rofi
   ]) ++ (lib.optionals isDarwin [
-    emacsMacport
   ]);
 
   # TODO load user config if passed in, else default
@@ -62,6 +63,7 @@ in
     };
     interactiveShellInit = ''
       fish_add_path $HOME/.emacs.d/bin/
+      # TODO if file extraInit file exists, source it.
     '';
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
@@ -102,7 +104,6 @@ in
       fi
     '';
   };
-
 
   programs.starship = {
     enable = false;
