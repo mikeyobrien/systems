@@ -20,18 +20,16 @@ in
     nix-direnv
     yadm
     grc
+    tree-sitter
 
     # rust
     cargo
     rustc
     rust-analyzer
-
     git-crypt
 
-  ] ++ (lib.optionals isLinux [
-    ((emacsPackagesFor emacsUnstable).emacsWithPackages (epkgs:
+    ((emacsPackagesFor emacsPgtk).emacsWithPackages (epkgs:
       with epkgs;
-      # Use Nix to manage packages with non-trivial userspace dependencies.
       [
         sqlite3
         pdf-tools
@@ -39,6 +37,7 @@ in
         vterm
       ]
     ))
+  ] ++ (lib.optionals isLinux [
     _1password
     _1password-gui
     firefox

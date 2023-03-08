@@ -38,8 +38,18 @@
     fish
   ];
 
+  homebrew = {
+    taps = [
+      "d12frosted/emacs-plus"
+    ];
+  };
+
   environment.systemPackages = with pkgs; [
     cachix
+    tree-sitter
+    gcc
+    cmake
+    bintools
   ];
 
 }
