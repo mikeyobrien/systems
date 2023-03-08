@@ -44,6 +44,11 @@ let
   };
 in
 {
+  nix.settings = {
+    substituters = ["https://mikeyobrien.cachix.org"];
+    trusted-public-keys = ["mikeyobrien.cachix.org-1:DzdUUa3CbbH03Fa1BoBKvixdnMr/dKRsTSyFyTP53Ws="];
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

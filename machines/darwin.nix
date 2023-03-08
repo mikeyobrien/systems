@@ -2,6 +2,11 @@
 
 {
   nix.useDaemon = true;
+  nix.settings = {
+    substituters = ["https://mikeyobrien.cachix.org"];
+    trusted-public-keys = ["mikeyobrien.cachix.org-1:DzdUUa3CbbH03Fa1BoBKvixdnMr/dKRsTSyFyTP53Ws="];
+  };
+
   services.nix-daemon.enable = true;
 
   programs.zsh.enable = true;
@@ -32,4 +37,9 @@
     zsh
     fish
   ];
+
+  environment.systemPackages = with pkgs; [
+    cachix
+  ];
+
 }
