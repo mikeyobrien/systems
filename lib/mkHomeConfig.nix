@@ -1,9 +1,16 @@
-user: { config, lib, pkgs, home-manager, user, system, overlays, ... }:
+user: { nixpkgs, home-manager, system, overlays, ... }:
 
+let 
+  pkgs = import nixpkgs { inherit overlays system; config.allowUnfree = true; };
+
+in
 home-manager.lib.homeManagerConfiguration rec {
-  inherit system;
+  inherit pkgs;
   modules = [
-    { nixpkgs.overlays = overlays; }
+    {
+      home.username = "mobrienv";
+      home.homeDirectory = "/home/mobrienv/";
+    }
     ../home-manager
   ];
 }
