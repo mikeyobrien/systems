@@ -44,10 +44,18 @@ in
     firefox
     rofi
   ]) ++ (lib.optionals isDarwin [
+    pinentry_mac
   ]);
 
   # TODO load user config if passed in, else default
   xdg.configFile."i3/config".text = builtins.readFile ./i3;
+
+  programs.gpg = {
+    enable = true;
+    settings = {
+      pinentry-program = "${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS";
+    };
+  };
 
   programs.alacritty = {
     enable = true;
@@ -55,6 +63,7 @@ in
      font.size = 14;
     };
   };
+
 
   programs.fish = {
     enable = true;
@@ -107,16 +116,6 @@ in
         PS1='$ '
       fi
     '';
-  };
-
-  programs.starship = {
-    enable = false;
-    enableFishIntegration = true;
-    settings = {
-      git_status = {
-        disabled = true;
-      };
-    };
   };
 
   programs.tmux = {
