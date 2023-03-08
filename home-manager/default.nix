@@ -50,12 +50,7 @@ in
   # TODO load user config if passed in, else default
   xdg.configFile."i3/config".text = builtins.readFile ./i3;
 
-  programs.gpg = {
-    enable = true;
-    settings = {
-      pinentry-program = "${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS";
-    };
-  };
+  programs.gpg.enable = true;
 
   programs.alacritty = {
     enable = true;
@@ -64,20 +59,42 @@ in
     };
   };
 
+  programs.bash = {
+    enable = true;
+    shellOptions = [];
+    historyControl = [ "ignoredups" "ignorespace" ];
+    #initExtra = builtins.readFile ./bashrc;
+
+    shellAliases = {
+      ga = "git add";
+      gc = "git commit";
+      gco = "git checkout";
+      gcp = "git cherry-pick";
+      gdiff = "git diff";
+      gl = "git prettylog";
+      gp = "git push";
+      gs = "git status";
+      gt = "git tag";
+    };
+  };
 
   programs.fish = {
     enable = true;
     shellAliases = {
-      update-desktop = "sudo nixos-rebuild switch --flake /home/mobrien/Code/nix#desktop";
+      ga = "git add";
+      gc = "git commit";
+      gco = "git checkout";
+      gcp = "git cherry-pick";
+      gdiff = "git diff";
+      gl = "git prettylog";
+      gp = "git push";
+      gs = "git status";
+      gt = "git tag";
     };
-    interactiveShellInit = ''
-      fish_add_path $HOME/.emacs.d/bin/
-
-      # if file extraInit file exists, source it.
-      if test -e $HOME/.config/fish/extra.config
-          source $HOME/.config/fish/extra.config
-      end
-    '';
+    interactiveShellInit = lib.strings.concatStrings (lib.strings.intersperse "\n" [
+      (builtins.readFile ./fish.config)
+      "set -g SHELL ${pkgs.fish}/bin/fish"
+    ]);
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
@@ -117,6 +134,10 @@ in
     userEmail = "hmobrienv@gmail.com";
     extraConfig = {
       safe.directory = [ "*" ];
+    };
+    aliases = {
+      prettylog = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(r) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+      root = "rev-parse --show-toplevel";
     };
   };
 
@@ -161,6 +182,15 @@ in
 
   programs.i3status = {
     enable = isLinux;
+  };
+
+  services.gpg-agent = {
+    enable = isLinux;
+    pinentryFlavor = "tty";
+
+    # cache the keys forever so we don't get asked for a password
+    defaultCacheTtl = 31536000;
+    maxCacheTtl = 31536000;
   };
 
   home.stateVersion = "22.11";
