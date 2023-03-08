@@ -86,38 +86,6 @@ in
     ];
   };
 
-  programs.zsh = {
-    enable = false;
-    shellAliases = {
-      update-desktop = "sudo nixos-rebuild switch --flake /home/mobrien/Code/nix#desktop";
-    };
-    zplug = {
-      enable = true;
-      plugins = [
-        { name = "zsh-users/zsh-autosuggestions"; } # Simple plugin installation
-        { name = "zsh-users/zsh-syntax-highlighting"; }
-        { name = "zsh-users/zsh-history-substring-search"; }
-        { name = "zsh-users/zsh-completions"; }
-      ];
-    };
-    history = {
-      size = 10000;
-      path = "${config.xdg.dataHome}/zsh/history";
-    };
-    initExtra = ''
-      # Emacs tramp fix
-      if [[ "$TERM" == "dumb" ]]
-      then
-        unsetopt zle
-        unsetopt prompt_cr
-        unsetopt prompt_subst
-        unfunction precmd
-        unfunction preexec
-        PS1='$ '
-      fi
-    '';
-  };
-
   programs.tmux = {
     enable = true;
     terminal = "screen-256color";
@@ -170,9 +138,7 @@ in
       vim-terraform
       vim-tmux-navigator
 
-      nvim-jdtls
       nvim-dap
-
       nvim-web-devicons
       nvim-colorizer-lua
       nvim-treesitter
@@ -191,7 +157,6 @@ in
 
   programs.direnv = {
     enable = true;
-    enableZshIntegration = true;
   };
 
   programs.i3status = {

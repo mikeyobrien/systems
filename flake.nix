@@ -40,13 +40,7 @@
     };
 
     darwinConfigurations = {
-      personal = mkDarwin "personal" rec {
-        inherit nixpkgs home-manager overlays darwin;
-        system = "aarch64-darwin";
-        user = "mobrien";
-      };
-
-      work = mkDarwin "work" rec {
+      m1 = mkDarwin "m1" rec {
         inherit nixpkgs home-manager overlays darwin;
         system = "aarch64-darwin";
         user = "mobrienv";
@@ -57,10 +51,6 @@
       x86_64-linux = mkHomeConfig "x86_64" rec {
         inherit nixpkgs home-manager overlays;
         system = "x86_64-linux";
-      };
-      aarch64-darwin = mkHomeConfig "aarch64-darwin" rec {
-        inherit nixpkgs home-manager overlays;
-        system = "aarch64-darwin";
       };
     };
   };
