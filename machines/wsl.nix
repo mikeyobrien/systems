@@ -28,7 +28,10 @@
     vim
     gcc
     libtool
+<<<<<<< HEAD
     emacsPgtk
+=======
+>>>>>>> 2aab04d (add support for nixos-wsl)
     wayland
     firefox
 
