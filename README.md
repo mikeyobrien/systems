@@ -21,5 +21,3 @@ Switch home-manager,
 ``` 
 home-manager switch -b backup --flake .#<configuration>
 ```
-
-

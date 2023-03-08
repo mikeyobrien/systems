@@ -42,6 +42,12 @@ in
     _1password-gui
     firefox
     rofi
+
+    # Emacs Everywhere
+    xclip
+    xdotool
+    xprop
+    xwininfo
   ]) ++ (lib.optionals isDarwin [
     pinentry_mac
   ]);
