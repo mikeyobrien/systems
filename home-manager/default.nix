@@ -21,6 +21,8 @@ in
     yadm
     grc
     tree-sitter
+    nodejs
+
 
     # rust
     cargo
@@ -103,10 +105,34 @@ in
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
-      { name = "hydro"; src = pkgs.fishPlugins.hydro.src; }
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+      {
+        name = "bobthefish";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "theme-bobthefish";
+          rev = "a2ad38aa051aaed25ae3bd6129986e7f27d42d7b";
+          sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
+        };
+      }
+      {
+        name = "z";
+        src = pkgs.fetchFromGitHub {
+          owner = "jethrokuan";
+          repo = "z";
+          rev = "85f863f20f24faf675827fb00f3a4e15c7838d76";
+          sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
+        };
+      }
     ];
   };
+
+  # bob the fish activation
+  xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
+    for f in $plugin_dir/*.fish
+      source $f
+    end
+    '';
 
   programs.tmux = {
     enable = true;
