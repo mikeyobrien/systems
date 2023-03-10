@@ -48,8 +48,6 @@ in
     # Emacs Everywhere
     xclip
     xdotool
-    xprop
-    xwininfo
   ]) ++ (lib.optionals isDarwin [
     pinentry_mac
   ]);

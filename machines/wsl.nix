@@ -11,7 +11,7 @@
     docker-native.enable = true;
 
     # Enable integration with Docker Desktop (needs to be installed)
-    docker-desktop.enable = true;
+    # docker-desktop.enable = true;
   };
 
   # Enable nix flakes
@@ -32,10 +32,23 @@
     wayland
     firefox
 
+    ((emacsPackagesFor emacsPgtk).emacsWithPackages (epkgs:
+      with epkgs;
+      [
+        sqlite3
+        pdf-tools
+        org-pdftools
+        vterm
+      ]
+    ))
+
+
     # rust
     cargo
     rustc
   ];
+
+  services.syncthing.enable = true;
 
   security.polkit.enable = true;
   system.stateVersion = "22.11";
