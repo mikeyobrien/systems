@@ -81,6 +81,8 @@ in
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -115,6 +117,7 @@ in
      docker-compose
      gcc
      bintools
+     wayland
      alacritty # gpu accelerated terminal
      rofi
   ];

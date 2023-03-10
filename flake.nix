@@ -65,7 +65,7 @@
         inherit nixpkgs home-manager overlays;
         system = "x86_64-linux";
         name = "desktop";
-        user = "mobrien";
+	user = "mobrienv";
      };
      wsl = mkWsl "wsl" rec {
         inherit nixpkgs nixos-wsl home-manager overlays;
