@@ -45,13 +45,19 @@
       ]
     ))
 
-
     # rust
     cargo
     rustc
   ];
 
-  services.syncthing.enable = true;
+  services.syncthing = {
+    enable = true;
+    dataDir = "/home/mobrienv";
+    configDir = "/home/mobrienv/.config/syncthing";
+    openDefaultPorts = true;
+    user = "mobrienv";
+    group = "users";
+  };
 
   security.polkit.enable = true;
   system.stateVersion = "22.11";

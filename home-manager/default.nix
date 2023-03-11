@@ -222,6 +222,7 @@ in
     maxCacheTtl = 31536000;
   };
 
+
   home.stateVersion = "22.11";
   programs.home-manager.enable = true;
 }

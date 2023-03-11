@@ -137,6 +137,17 @@ in
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;
 
+  services.syncthing = {
+    enable = true;
+    dataDir = "/home/mobrienv";
+    configDir = "/home/mobrienv/.config/syncthing";
+    openDefaultPorts = true;
+    user = "mobrienv";
+    group = "users";
+    guiAddress = "0.0.0.0:8384";
+  };
+
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
