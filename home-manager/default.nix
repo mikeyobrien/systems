@@ -119,7 +119,7 @@ in
           owner = "jethrokuan";
           repo = "z";
           rev = "85f863f20f24faf675827fb00f3a4e15c7838d76";
-          sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
+          sha256 = "+FUBM7CodtZrYKqU542fQD+ZDGrd2438trKM0tIESs0=";
         };
       }
     ];
