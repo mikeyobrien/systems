@@ -122,6 +122,11 @@ in
      rofi
   ];
 
+  services.tailscale.enable = true;
+
+  networking.firewall.allowedTCPPorts = [ 8384 ];
+  networking.firewall.allowedUDPPorts = [ 41641 ];
+
   fonts = {
     fontDir.enable = true;
     fonts = [
@@ -136,6 +141,11 @@ in
 
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;
+
+
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+
 
   services.syncthing = {
     enable = true;
