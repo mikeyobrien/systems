@@ -40,8 +40,12 @@ in
   ] ++ (lib.optionals isLinux [
     _1password
     _1password-gui
+
     firefox
     rofi
+    discord
+
+    # Emacs Everywhere
     xclip
     xdotool
   ]) ++ (lib.optionals isDarwin [
@@ -128,12 +132,9 @@ in
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
     set -g theme_newline_cursor yes
     set -g theme_newline_prompt '$ '
-<<<<<<< HEAD
     set -g theme_display_date no
     set -g theme_powerline_fonts yes
-=======
     fish_add_path $HOME/.config/emacs/bin
->>>>>>> b143266 (Go back to using emacsGit on macos)
     for f in $plugin_dir/*.fish
       source $f
     end
