@@ -130,6 +130,8 @@ in
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
     set -g theme_newline_cursor yes
     set -g theme_newline_prompt '$ '
+    set -g theme_display_date no
+    set -g theme_powerline_fonts yes
     for f in $plugin_dir/*.fish
       source $f
     end
