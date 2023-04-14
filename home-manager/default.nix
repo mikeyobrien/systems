@@ -10,7 +10,6 @@ in
     fd
     ripgrep
     babashka
-    mu
     offlineimap
     lua
     htop
@@ -23,20 +22,19 @@ in
     tree-sitter
     nodejs
 
-
     # rust
     cargo
     rustc
     rust-analyzer
     git-crypt
-
-    ((emacsPackagesFor emacsPgtk).emacsWithPackages (epkgs:
+    ((emacsPackagesFor emacsGit).emacsWithPackages (epkgs:
       with epkgs;
       [
         sqlite3
         pdf-tools
         org-pdftools
         vterm
+        mu
       ]
     ))
   ] ++ (lib.optionals isLinux [
@@ -44,8 +42,6 @@ in
     _1password-gui
     firefox
     rofi
-
-    # Emacs Everywhere
     xclip
     xdotool
   ]) ++ (lib.optionals isDarwin [
@@ -83,6 +79,8 @@ in
     };
   };
 
+
+  programs.mu.enable = true;
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -130,8 +128,12 @@ in
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
     set -g theme_newline_cursor yes
     set -g theme_newline_prompt '$ '
+<<<<<<< HEAD
     set -g theme_display_date no
     set -g theme_powerline_fonts yes
+=======
+    fish_add_path $HOME/.config/emacs/bin
+>>>>>>> b143266 (Go back to using emacsGit on macos)
     for f in $plugin_dir/*.fish
       source $f
     end

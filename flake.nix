@@ -30,7 +30,7 @@
       inputs.neovim-nightly-overlay.overlay
       inputs.emacs-overlay.overlay
       (final: prev: {
-        emacsPgtk = if final.stdenv.isDarwin then prev.emacsPgtk.overrideAttrs (old: {
+        emacsGit = if final.stdenv.isDarwin then prev.emacsGit.overrideAttrs (old: {
           patches =
             (old.patches or [])
             ++ [
@@ -55,7 +55,7 @@
                 sha256 = "oM6fXdXCWVcBnNrzXmF0ZMdp8j0pzkLE66WteeCutv8=";
               })
             ];
-         }) else prev.emacsPgtk;
+         }) else prev.emacsGit;
       })
     ];
   in {
