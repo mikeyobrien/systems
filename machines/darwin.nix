@@ -83,25 +83,33 @@ lctrl + cmd - k : yabai -m window --resize top:0:-50; \
 lctrl + cmd - l : yabai -m window --resize right:50:0; \
                   yabai -m window --resize left:50:0
 
-lctrl + cmd - e : yabai -m window --toggle split
+lctrl + cmd - e : yabai -m window --toggle
 
 # float / unfloat window and center on screen
 shift + cmd - t : yabai -m window --toggle float;\
           yabai -m window --grid 4:4:1:1:2:2
-
-# restart yabai
-shift + cmd - space: \
-    /usr/bin/env osascript <<< \
-        "display notification \"Restarting Yabai\" with title \"Yabai\""; \
-    pkill yabai
 
 # Float / Unfloat window
 shift + alt - space : \
     yabai -m window --toggle float; \
     yabai -m window --toggle border
 
+
+# Set space to float
+shift + cmd - p : yabai -m space --layout float
+
+# Set space to bsp
+shift + cmd - b : yabai -m space --layout bsp
+
+
+# restart yabai
+shift + cmd - space: \
+    /usr/bin/env display <<< \
+        "notification osascript \"Restarting Yabai\" with title \"Yabai\""; \
+    pkill yabai
+
+
 # Make window native fullscreen
-shift + cmd - f         : yabai -m window --toggle zoom-fullscreen
 # shift + cmd - f : yabai -m window --toggle native-fullscreen
 '';
   };
@@ -116,6 +124,7 @@ shift + cmd - f         : yabai -m window --toggle zoom-fullscreen
     gcc
     cmake
     bintools
+    mu
   ];
 
 }

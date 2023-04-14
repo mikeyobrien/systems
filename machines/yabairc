@@ -39,8 +39,7 @@ yabai -m config mouse_action1               move
 yabai -m config mouse_action2               resize
 
 # ===== Rules ==================================
-
-yabai -m rule --add label=emacs app=emacs manage=on
+yabai -m rule --add label=emacs app=emacs space=1 manage=on
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
 yabai -m rule --add label="System Preferences" app="^System Preferences$" title=".*" manage=off
@@ -50,6 +49,12 @@ yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
 yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
 yabai -m rule --add label="Software Update" title="Software Update" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+yabai -m rule --add label="Cisco AnyConnect Secure Mobility Client" app="Cisco AnyConnect Secure Mobility Client" manage=off
+
+# ===== Spaces ================================
+yabai -m space 1 --layout bsp        # Space 1 for Emacs
+yabai -m space 2 --layout bsp        # Space 2 for IntelliJ
+yabai -m space 3 --layout float      # Space 3 for everything else
 
 # ===== Signals ================================
 
