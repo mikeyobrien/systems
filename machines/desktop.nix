@@ -120,6 +120,8 @@ in
      wayland
      alacritty # gpu accelerated terminal
      rofi
+     xclip
+     nomacs # image viewer
   ];
 
   services.tailscale.enable = true;
@@ -142,7 +144,6 @@ in
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;
 
-
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
 
@@ -157,6 +158,11 @@ in
     guiAddress = "0.0.0.0:8384";
   };
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

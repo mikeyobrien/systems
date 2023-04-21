@@ -4,6 +4,17 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in
 {
+  xdg.enable = true;
+  home.sessionVariables = {
+    LANG = "en_US.UTF-8";
+    LC_CTYPE = "en_US.UTF-8";
+    LC_ALL = "en_US.UTF-8";
+    EDITOR = "nvim";
+    PAGER = "less -FirSwX";
+  };
+
+  xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
+  xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
   home.packages = with pkgs; [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
     jq
@@ -21,12 +32,16 @@ in
     grc
     tree-sitter
     nodejs
+    tdesktop
 
     # rust
     cargo
     rustc
     rust-analyzer
     git-crypt
+    #python
+    nodePackages.pyright
+
     ((emacsPackagesFor emacsGit).emacsWithPackages (epkgs:
       with epkgs;
       [
@@ -35,6 +50,7 @@ in
         org-pdftools
         vterm
         mu
+        lsp-pyright
       ]
     ))
   ] ++ (lib.optionals isLinux [
@@ -43,6 +59,8 @@ in
 
     firefox
     rofi
+    haskellPackages.greenclip
+
     discord
 
     # Emacs Everywhere
@@ -229,6 +247,19 @@ in
     defaultCacheTtl = 31536000;
     maxCacheTtl = 31536000;
   };
+
+  services.polybar = {
+    enable = isLinux;
+    package = pkgs.polybar.override {
+      i3Support = true;
+      alsaSupport = true;
+      iwSupport = true;
+      githubSupport = true;
+    };
+    config = ./polybar.ini;
+    script = "polybar example &";
+  };
+
 
 
   home.stateVersion = "22.11";
