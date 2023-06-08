@@ -15,6 +15,7 @@ in
 
   xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
+
   home.packages = with pkgs; [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
     jq
@@ -31,8 +32,7 @@ in
     yadm
     grc
     tree-sitter
-    nodejs
-    tdesktop
+    xsv
 
     # rust
     cargo
@@ -82,6 +82,14 @@ in
     };
   };
 
+  programs.starship.enable = true;
+
+
+  programs.kitty = {
+    enable = true;
+    extraConfig = builtins.readFile ./kitty;
+  };
+
   programs.bash = {
     enable = true;
     shellOptions = [];
@@ -125,15 +133,15 @@ in
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
-      {
-        name = "bobthefish";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "theme-bobthefish";
-          rev = "76cac812064fa749ffc258a20398c6f6250860c5";
-          sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
-        };
-      }
+      # {
+      #   name = "bobthefish";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "oh-my-fish";
+      #     repo = "theme-bobthefish";
+      #     rev = "76cac812064fa749ffc258a20398c6f6250860c5";
+      #     sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
+      #   };
+      # }
       {
         name = "z";
         src = pkgs.fetchFromGitHub {
@@ -156,6 +164,7 @@ in
     for f in $plugin_dir/*.fish
       source $f
     end
+
     '';
 
   programs.tmux = {

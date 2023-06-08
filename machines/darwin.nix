@@ -49,7 +49,7 @@
     package = pkgs.skhd;
     skhdConfig = ''
 # open iTerm2
-# cmd - return : /Applications/iTerm.app/Contents/MacOS/iTerm2
+cmd - return : /etc/profiles/per-user/mobrienv/bin/kitty
 
 # Navigate
 cmd - h : yabai -m window --focus west
