@@ -4,6 +4,7 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in
 {
+  imports = [ ../modules/protonmail-bridge.nix ];
   xdg.enable = true;
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
@@ -12,6 +13,7 @@ in
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
   };
+
 
   xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
@@ -33,6 +35,9 @@ in
     grc
     tree-sitter
     xsv
+    nodejs
+    tdesktop
+    pass
 
     # rust
     cargo
@@ -42,7 +47,7 @@ in
     #python
     nodePackages.pyright
 
-    ((emacsPackagesFor emacsGit).emacsWithPackages (epkgs:
+    ((emacsPackagesFor emacs-git).emacsWithPackages (epkgs:
       with epkgs;
       [
         sqlite3
@@ -269,7 +274,7 @@ in
     script = "polybar example &";
   };
 
-
+  services.protonmail-bridge.enable = true;
 
   home.stateVersion = "22.11";
   programs.home-manager.enable = true;

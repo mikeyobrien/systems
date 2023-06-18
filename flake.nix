@@ -5,7 +5,7 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/release-23.05";
       # We want home-manager to use the same set of nixpkgs as our system.
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -17,10 +17,11 @@
     flake-utils.url = "github:numtide/flake-utils";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
 
-  outputs = inputs@{ self, nixpkgs, home-manager, darwin, nixos-wsl, emacs-overlay, flake-utils, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, darwin, nixos-wsl, emacs-overlay, flake-utils, vscode-server, ... }:
   let
     mkConfig = import ./lib/mkConfig.nix;
     mkWsl = import ./lib/mkWsl.nix;
@@ -29,8 +30,14 @@
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       inputs.emacs-overlay.overlay
+
+      # https://discourse.nixos.org/t/error-when-upgrading-nixos-related-to-fcitx-engines/26940/12
       (final: prev: {
-        emacsGit = if final.stdenv.isDarwin then prev.emacsGit.overrideAttrs (old: {
+        fcitx-engines = final.fcitx5;
+      })
+
+      (final: prev: {
+        emacs-git = if final.stdenv.isDarwin then prev.emacs-git.overrideAttrs (old: {
           patches =
             (old.patches or [])
             ++ [
@@ -55,17 +62,18 @@
                 sha256 = "oM6fXdXCWVcBnNrzXmF0ZMdp8j0pzkLE66WteeCutv8=";
               })
             ];
-         }) else prev.emacsGit;
+         }) else prev.emacs-git;
       })
     ];
   in {
     nixosConfigurations = {
       desktop = mkConfig "desktop" rec {
-        inherit nixpkgs home-manager overlays;
+        inherit nixpkgs home-manager overlays vscode-server;
         system = "x86_64-linux";
         name = "desktop";
-	user = "mobrienv";
+        user = "mobrienv";
      };
+
      wsl = mkWsl "wsl" rec {
         inherit nixpkgs nixos-wsl home-manager overlays;
         system = "x86_64-linux";

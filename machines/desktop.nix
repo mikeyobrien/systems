@@ -95,20 +95,33 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
+    videoDrivers = [ "nvidia" ];
     desktopManager = {
       xterm.enable = false;
+      plasma5.enable = true;
       wallpaper.mode = "fill";
     };
 
     displayManager = {
       defaultSession = "none+i3";
       lightdm.enable = true;
+      #sddm.enable=true;
     };
 
     windowManager = {
+      i3.package = pkgs.i3-gaps;
       i3.enable = true;
     };
   };
+
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "${pkgs.icewm}/bin/icewm";
+  services.xrdp.openFirewall = true;
+
+
+  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.enable = true;
+  hardware.pulseaudio.support32Bit = true;
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
@@ -122,6 +135,23 @@ in
      rofi
      xclip
      nomacs # image viewer
+     cura
+     cifs-utils
+
+     ta-lib # technical analysis
+     gcc-unwrapped
+
+     lutris
+     (wineWowPackages.full.override {
+       wineRelease = "staging";
+       mingwSupport = true;
+     })
+     winetricks
+     vulkan-tools
+
+     python311
+     python311Packages.pip-tools
+     python311Packages.setuptools
   ];
 
   services.tailscale.enable = true;
@@ -140,14 +170,16 @@ in
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.settings.X11Forwarding = true;
 
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;
 
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
+  services.vscode-server.enable = true;
 
-
+  
   services.syncthing = {
     enable = true;
     dataDir = "/home/mobrienv";
@@ -157,6 +189,8 @@ in
     group = "users";
     guiAddress = "0.0.0.0:8384";
   };
+
+  programs.fish.enable = true;
 
   programs.steam = {
     enable = true;

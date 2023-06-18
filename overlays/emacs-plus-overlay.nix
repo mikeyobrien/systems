@@ -2,7 +2,7 @@
 self: super: {
   emacs = if pkgs.stdenv.isDarwin
         then
-          pkgs.emacsGit.overrideAttrs (old: {
+          pkgs.emacs-git.overrideAttrs (old: {
             patches =
               (old.patches or [])
               ++ [
