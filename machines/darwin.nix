@@ -40,22 +40,22 @@
   ];
 
   services.yabai = {
-    enable = true;
+    enable = false;
     extraConfig = builtins.readFile ./yabairc;
   };
 
   services.skhd = {
-    enable = true;
+    enable = false;
     package = pkgs.skhd;
     skhdConfig = ''
 # open iTerm2
-cmd - return : /etc/profiles/per-user/mobrienv/bin/kitty
+# cmd - return : /etc/profiles/per-user/mobrienv/bin/kitty
 
 # Navigate
-cmd - h : yabai -m window --focus west
-cmd - j : yabai -m window --focus south
-cmd - k : yabai -m window --focus north
-cmd - l : yabai -m window --focus east
+#cmd - h : yabai -m window --focus west
+#cmd - j : yabai -m window --focus south
+#cmd - k : yabai -m window --focus north
+#cmd - l : yabai -m window --focus east
 
 # swap managed window
 shift + cmd - h : yabai -m window --warp west

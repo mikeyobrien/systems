@@ -134,20 +134,6 @@ lua require'colorizer'.setup()
 "nvim web devicons
 lua require'nvim-web-devicons'.setup{ default = true; };
 
-"treesitter
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    custom_captures = {
-      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
-      ["foo.bar"] = "Identifier",
-    },
-    additional_vim_regex_highlighting = false,
-  },
-}
-EOF
-
 " hop-nvim
 lua require'hop'.setup()
 nmap s <cmd>HopChar2<cr>

@@ -23,7 +23,7 @@ in
     jq
     fd
     ripgrep
-    babashka
+    # babashka
     offlineimap
     lua
     htop
@@ -38,6 +38,8 @@ in
     nodejs
     tdesktop
     pass
+    ispell
+    tree
 
     # rust
     cargo
@@ -52,8 +54,12 @@ in
       [
         sqlite3
         pdf-tools
+        org-roam
+        org-roam-ui
         org-pdftools
         vterm
+        magit
+        magit-section
         mu
         lsp-pyright
       ]
@@ -129,6 +135,8 @@ in
       gp = "git push";
       gs = "git status";
       gt = "git tag";
+      ntfycmd = "curl -d \"success\" https://ntfy.mikeyobrien.com/testing || curl -d \"failure\" https://ntfy.mikeyobrien.com/testing";
+      emacs = "${pkgs.emacsGit}/Applications/Emacs.app/Contents/MacOS/Emacs";
     };
     interactiveShellInit = lib.strings.concatStrings (lib.strings.intersperse "\n" [
       (builtins.readFile ./fish.config)
@@ -228,10 +236,11 @@ in
       vim-terraform
       vim-tmux-navigator
 
+      aniseed
       nvim-dap
       nvim-web-devicons
       nvim-colorizer-lua
-      nvim-treesitter
+      nvim-treesitter.withAllGrammars
       plenary-nvim
       telescope-nvim
       telescope-coc-nvim
@@ -254,7 +263,7 @@ in
   };
 
   services.gpg-agent = {
-    enable = isLinux;
+    # enable = isLinux;
     pinentryFlavor = "tty";
 
     # cache the keys forever so we don't get asked for a password
