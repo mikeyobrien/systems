@@ -36,10 +36,11 @@ in
     tree-sitter
     xsv
     nodejs
-    tdesktop
     pass
     ispell
     tree
+    lazygit
+
 
     # rust
     cargo
@@ -49,6 +50,7 @@ in
     #python
     nodePackages.pyright
 
+  ] ++ (lib.optionals isLinux [
     ((emacsPackagesFor emacs-git).emacsWithPackages (epkgs:
       with epkgs;
       [
@@ -64,7 +66,6 @@ in
         lsp-pyright
       ]
     ))
-  ] ++ (lib.optionals isLinux [
     _1password
     _1password-gui
 
@@ -127,6 +128,7 @@ in
     shellAliases = {
       python = "python3";
       ga = "git add";
+      gd = "git diff";
       gc = "git commit";
       gco = "git checkout";
       gcp = "git cherry-pick";
@@ -136,11 +138,12 @@ in
       gs = "git status";
       gt = "git tag";
       ntfycmd = "curl -d \"success\" https://ntfy.mikeyobrien.com/testing || curl -d \"failure\" https://ntfy.mikeyobrien.com/testing";
-      emacs = "${pkgs.emacsGit}/Applications/Emacs.app/Contents/MacOS/Emacs";
+      #emacs = "${pkgs.emacs-git}/Applications/Emacs.app/Contents/MacOS/Emacs";
     };
     interactiveShellInit = lib.strings.concatStrings (lib.strings.intersperse "\n" [
       (builtins.readFile ./fish.config)
       "set -g SHELL ${pkgs.fish}/bin/fish"
+      "set -gx PATH $PATH $HOME/bin"
     ]);
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
@@ -218,6 +221,11 @@ in
     };
   };
 
+  #home.file."Developer/lombok.jar" = {
+  #  target = "${pkgs.lombok}/share/java/lombok.jar";
+  #  type = "symlink";
+  #};
+
   programs.neovim = {
     enable = true;
     withPython3 = true;
@@ -236,14 +244,23 @@ in
       vim-terraform
       vim-tmux-navigator
 
-      aniseed
+      mason-nvim
+      mason-lspconfig-nvim
       nvim-dap
+      nvim-cmp
+      vim-vsnip
+      cmp-vsnip
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
+      cmp_luasnip
+      nvim-jdtls
+      nvim-lspconfig
       nvim-web-devicons
       nvim-colorizer-lua
       nvim-treesitter.withAllGrammars
       plenary-nvim
       telescope-nvim
-      telescope-coc-nvim
       telescope-project-nvim
       hop-nvim
 
@@ -251,7 +268,7 @@ in
       lush-nvim
       gruvbox-nvim
     ];
-    extraConfig = builtins.readFile ./init.vim;
+    extraLuaConfig = builtins.readFile ./init.lua;
   };
 
   programs.direnv = {
@@ -282,7 +299,6 @@ in
     config = ./polybar.ini;
     script = "polybar example &";
   };
-
   services.protonmail-bridge.enable = true;
 
   home.stateVersion = "22.11";

@@ -27,7 +27,7 @@
     # End Nix
     '';
 
-  fonts.fontDir.enable = true;
+  fonts.fontDir.enable = false;
   fonts.fonts = [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
     pkgs.roboto
