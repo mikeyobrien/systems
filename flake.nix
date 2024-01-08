@@ -2,7 +2,7 @@
   description = "NixOS configs";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs/nixos-23.05";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -46,7 +46,7 @@
      };
 
      wsl = mkWsl "wsl" rec {
-        inherit nixpkgs nixos-wsl home-manager overlays;
+        inherit nixpkgs nixos-wsl home-manager overlays vscode-server;
         system = "x86_64-linux";
         name = "wsl";
         user = "mobrienv";

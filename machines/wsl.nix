@@ -7,9 +7,6 @@
     defaultUser = "${defaultUser}";
     startMenuLaunchers = true;
 
-    # Enable native Docker support
-    docker-native.enable = true;
-
     # Enable integration with Docker Desktop (needs to be installed)
     # docker-desktop.enable = true;
   };
@@ -28,10 +25,6 @@
     vim
     gcc
     libtool
-<<<<<<< HEAD
-    emacsPgtk
-=======
->>>>>>> 2aab04d (add support for nixos-wsl)
     wayland
     firefox
 
@@ -50,6 +43,8 @@
     rustc
   ];
 
+  programs.fish.enable = true;
+  services.vscode-server.enable = true;
   services.syncthing = {
     enable = true;
     dataDir = "/home/mobrienv";

@@ -1,8 +1,9 @@
-user: { nixpkgs, home-manager, system, overlays, user, name, nixos-wsl, ... }:
+user: { nixpkgs, home-manager, system, overlays, user, name, nixos-wsl, vscode-server, ... }:
 
 nixpkgs.lib.nixosSystem rec {
   inherit system;
   modules = [
+    vscode-server.nixosModules.default
     { nixpkgs.overlays = overlays; }
     ../machines/${name}.nix
     ../users/${user}/nixos.nix
