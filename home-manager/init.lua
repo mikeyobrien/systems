@@ -1,5 +1,5 @@
 -- Set background color
-vim.o.background = "dark"
+vim.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
 
 -- https://vonheikemen.github.io/devlog/tools/setup-nvim-lspconfig-plus-nvim-cmp/
@@ -120,7 +120,7 @@ augroup END
 -- Mason
 require("mason").setup()
 require("mason-lspconfig").setup {
-  ensure_installed = { "lua_ls", "jdtls" },
+  ensure_installed = { "lua_ls", "jdtls", "tsserver" },
 }
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -131,12 +131,19 @@ require('lspconfig').lua_ls.setup({
 -- Telescope setup
 require("telescope").setup({
   defaults = {
-    file_ignore_patterns = {"build", "env", "test-runtime", "bin"}
+    file_ignore_patterns = {"build", "env", "test-runtime", "bin"},
   }
 })
 
+vim.api.nvim_set_keymap('n', '<leader><leader>', "<cmd>lua require('telescope.builtin').git_files()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>ca', "<cmd>lua vim.lsp.buf.code_action()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>ld', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>lr', "<cmd>lua require('telescope.builtin').lsp_references()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>li', "<cmd>lua require('telescope.builtin').lsp_incoming_calls()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>lo', "<cmd>lua require('telescope.builtin').lsp_outgoing_calls()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>pF', "<cmd>lua require('telescope').extensions.project.project{}<cr>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>p', "<cmd>lua require('telescope.builtin').commands()<cr>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>bb', "<cmd>lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').file_browser()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", {noremap = true, silent = true})
@@ -150,10 +157,6 @@ vim.api.nvim_set_keymap('n', '<leader>gs', "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap('n', '<leader>gS', "<cmd>lua require('telescope.builtin').git_stash()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>t', "<cmd>lua require('telescope.builtin').treesitter()<cr>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>!', "<cmd>lua require('telescope.builtin').command_history()<cr>", {noremap = true, silent = true})
-
-
--- nvim colorizer
-require'colorizer'.setup()
 
 -- nvim web devicons
 require'nvim-web-devicons'.setup{ default = true; }

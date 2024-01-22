@@ -257,9 +257,9 @@ in
       nvim-jdtls
       nvim-lspconfig
       nvim-web-devicons
-      nvim-colorizer-lua
       nvim-treesitter.withAllGrammars
       plenary-nvim
+      diffview-nvim
       telescope-nvim
       telescope-project-nvim
       hop-nvim
