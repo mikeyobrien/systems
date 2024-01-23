@@ -66,6 +66,10 @@
         inherit nixpkgs home-manager overlays;
         system = "x86_64-linux";
       };
+      devdesktop = mkHomeConfig "devdesktop" rec {
+        inherit nixpkgs home-manager overlays;
+        system = "x86_64-linux";
+      };
     };
   };
 }

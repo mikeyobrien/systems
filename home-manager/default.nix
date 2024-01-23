@@ -62,7 +62,6 @@ in
         vterm
         magit
         magit-section
-        mu
         lsp-pyright
       ]
     ))
@@ -74,8 +73,6 @@ in
     haskellPackages.greenclip
 
     discord
-
-    # Emacs Everywhere
     xclip
     xdotool
   ]) ++ (lib.optionals isDarwin [
@@ -276,7 +273,7 @@ in
   };
 
   programs.i3status = {
-    enable = isLinux;
+    #enable = isLinux;
   };
 
   services.gpg-agent = {
