@@ -134,6 +134,7 @@ shift + cmd - space: \
       "istat-menus"
       "imageoptim"
       "spotify"
+      "jetbrains-toolbox"
     ];
   };
 
