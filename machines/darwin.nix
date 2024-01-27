@@ -115,7 +115,18 @@ shift + cmd - space: \
   };
 
   homebrew = {
+    enable = true;
     taps = [];
+    casks = [
+      "syncthing"
+      "hammerspoon"
+      "discord"
+      "steam"
+      "raycast"
+      "istat-menus"
+      "imageoptim"
+      "spotify"
+    ];
   };
 
   environment.systemPackages = with pkgs; [

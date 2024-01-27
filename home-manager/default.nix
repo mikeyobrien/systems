@@ -118,8 +118,6 @@ in
     };
   };
 
-
-  programs.mu.enable = true;
   programs.fish = {
     enable = true;
     shellAliases = {
@@ -146,6 +144,7 @@ in
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+      { name = "fish-foreign-env"; src = pkgs.fishPlugins.fish-foreign-env.src; }
       # {
       #   name = "bobthefish";
       #   src = pkgs.fetchFromGitHub {
