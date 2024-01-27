@@ -135,6 +135,7 @@ shift + cmd - space: \
       "imageoptim"
       "spotify"
       "jetbrains-toolbox"
+      "ticktick"
     ];
   };
 
