@@ -40,6 +40,7 @@ in
     ispell
     tree
     lazygit
+    glow
 
 
     # rust
@@ -84,20 +85,24 @@ in
 
   programs.gpg.enable = true;
 
+  programs.starship.enable = true;
   programs.alacritty = {
     enable = true;
     settings = {
-     font.size = 14;
+      env.TERM = "xterm-256color";
+      font.size = 14;
+      font.normal.family = "JetBrainsMono Nerd Font";
+      key_bindings = [
+        { key = "K"; mods = "Command"; chars = "ClearHistory"; }
+        { key = "V"; mods = "Command"; action = "Paste"; }
+        { key = "C"; mods = "Command"; action = "Copy"; }
+        { key = "Key0"; mods = "Command"; action = "ResetFontSize"; }
+        { key = "Equals"; mods = "Command"; action = "IncreaseFontSize"; }
+        { key = "Minus"; mods = "Command"; action = "DecreaseFontSize"; }
+      ];
     };
   };
 
-  programs.starship.enable = true;
-
-
-  programs.kitty = {
-    enable = true;
-    extraConfig = builtins.readFile ./kitty;
-  };
 
   programs.bash = {
     enable = true;
@@ -116,6 +121,16 @@ in
       gs = "git status";
       gt = "git tag";
     };
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
   };
 
   programs.fish = {
@@ -144,7 +159,6 @@ in
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
       { name = "bass"; src = pkgs.fishPlugins.bass.src; }
-      { name = "fish-foreign-env"; src = pkgs.fishPlugins.fish-foreign-env.src; }
       # {
       #   name = "bobthefish";
       #   src = pkgs.fetchFromGitHub {
@@ -154,17 +168,10 @@ in
       #     sha256 = "1fssb5bqd2d7856gsylf93d28n3rw4rlqkhbg120j5ng27c7v7lq";
       #   };
       # }
-      {
-        name = "z";
-        src = pkgs.fetchFromGitHub {
-          owner = "jethrokuan";
-          repo = "z";
-          rev = "85f863f20f24faf675827fb00f3a4e15c7838d76";
-          sha256 = "+FUBM7CodtZrYKqU542fQD+ZDGrd2438trKM0tIESs0=";
-        };
-      }
     ];
   };
+
+  
 
   # bob the fish activation
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
@@ -235,6 +242,7 @@ in
       vim-fireplace
       vim-fugitive
       vim-markdown
+      tabular
       vim-nix
       vim-startify
       vim-terraform

@@ -126,16 +126,17 @@ shift + cmd - space: \
     enable = true;
     taps = [];
     casks = [
+      "homebrew/cask/docker"
       "syncthing"
       "hammerspoon"
       "discord"
       "steam"
       "raycast"
-      "istat-menus"
       "imageoptim"
       "spotify"
       "jetbrains-toolbox"
       "ticktick"
+      "obsidian"
     ];
   };
 
