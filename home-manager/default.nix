@@ -42,7 +42,6 @@ in
     lazygit
     glow
 
-
     # rust
     cargo
     rustc
@@ -105,7 +104,7 @@ in
 
 
   programs.bash = {
-    enable = true;
+    enable = false;
     shellOptions = [];
     historyControl = [ "ignoredups" "ignorespace" ];
     #initExtra = builtins.readFile ./bashrc;

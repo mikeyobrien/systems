@@ -120,7 +120,7 @@ augroup END
 -- Mason
 require("mason").setup()
 require("mason-lspconfig").setup {
-  ensure_installed = { "lua_ls", "jdtls", "tsserver" },
+  ensure_installed = { "lua_ls", "jdtls", "tsserver", "pyright" },
 }
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
