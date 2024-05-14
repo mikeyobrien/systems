@@ -233,45 +233,7 @@ in
     withPython3 = true;
     viAlias = true;
     vimAlias = true;
-    plugins = with pkgs.vimPlugins; [
-      vim-airline
-      vim-airline-themes
-      vim-commentary
-      vim-eunuch
-      vim-fireplace
-      vim-fugitive
-      vim-markdown
-      tabular
-      vim-nix
-      vim-startify
-      vim-terraform
-      vim-tmux-navigator
-
-      mason-nvim
-      mason-lspconfig-nvim
-      nvim-dap
-      nvim-cmp
-      vim-vsnip
-      cmp-vsnip
-      cmp-nvim-lsp
-      cmp-buffer
-      cmp-path
-      cmp_luasnip
-      nvim-jdtls
-      nvim-lspconfig
-      nvim-web-devicons
-      nvim-treesitter.withAllGrammars
-      plenary-nvim
-      diffview-nvim
-      telescope-nvim
-      telescope-project-nvim
-      hop-nvim
-
-      # colorscheme
-      lush-nvim
-      gruvbox-nvim
-    ];
-    extraLuaConfig = builtins.readFile ./init.lua;
+    #extraLuaConfig = builtins.readFile ../dotfiles/nvim/init.lua;
   };
 
   programs.direnv = {
