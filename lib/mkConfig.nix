@@ -3,7 +3,9 @@ user: { nixpkgs, home-manager, system, name, user, overlays, vscode-server, ... 
 nixpkgs.lib.nixosSystem rec {
   inherit system;
   modules = [
+    { imports = [ ../modules/nixos/sunshine.nix ]; }
     vscode-server.nixosModules.default
+
     # Apply our overlays. Overlays are keyed by system type so we have
     # to go through and apply our system type. We do this first so
     # the overlays are available globally.

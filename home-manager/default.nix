@@ -4,7 +4,11 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in
 {
-  imports = [ ../modules/protonmail-bridge.nix ];
+  imports = [ 
+    ../modules/protonmail-bridge.nix 
+  ];
+
+
   xdg.enable = true;
   home.sessionVariables = {
     LANG = "en_US.UTF-8";
@@ -13,7 +17,6 @@ in
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
   };
-
 
   xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
@@ -102,7 +105,7 @@ in
   };
 
   programs.atuin = {
-    enable = true;
+    enable = false;
     enableFishIntegration = true;
   };
 
@@ -225,7 +228,7 @@ in
   };
 
   services.gpg-agent = {
-    # enable = isLinux;
+    enable = isLinux;
     # cache the keys forever so we don't get asked for a password
     defaultCacheTtl = 31536000;
     maxCacheTtl = 31536000;
@@ -242,7 +245,7 @@ in
     config = ./polybar.ini;
     script = "polybar example &";
   };
-  services.protonmail-bridge.enable = true;
+  services.protonmail-bridge.enable = isLinux;
 
   home.stateVersion = "22.11";
   programs.home-manager.enable = true;
