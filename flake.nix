@@ -2,10 +2,12 @@
   description = "NixOS configs";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/master";
+    nixpkgs.url = "nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.05";
       # We want home-manager to use the same set of nixpkgs as our system.
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -28,7 +30,6 @@
     mkDarwin = import ./lib/mkDarwin.nix;
     mkHomeConfig = import ./lib/mkHomeConfig.nix;
     overlays = [
-      inputs.neovim-nightly-overlay.overlay
       inputs.emacs-overlay.overlay
 
       # https://discourse.nixos.org/t/error-when-upgrading-nixos-related-to-fcitx-engines/26940/12
@@ -36,6 +37,11 @@
         fcitx-engines = final.fcitx5;
       })
     ];
+    pkgs = import inputs.nixpkgs {
+        overlays = [
+            inputs.neovim-nightly-overlay.overlay
+        ];
+    };
   in {
     nixosConfigurations = {
       desktop = mkConfig "desktop" rec {

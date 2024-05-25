@@ -23,9 +23,9 @@ in
     jq
     fd
     ripgrep
-    # babashka
-    offlineimap
+    babashka
     lua
+    expect
     htop
     ripgrep
     fzf
@@ -47,32 +47,10 @@ in
     rustc
     rust-analyzer
     git-crypt
-    #python
+    python3
     nodePackages.pyright
 
   ] ++ (lib.optionals isLinux [
-    ((emacsPackagesFor emacs-git).emacsWithPackages (epkgs:
-      with epkgs;
-      [
-        sqlite3
-        pdf-tools
-        org-roam
-        org-roam-ui
-        org-pdftools
-        vterm
-        magit
-        magit-section
-        lsp-pyright
-      ]
-    ))
-    _1password
-    _1password-gui
-
-    firefox
-    rofi
-    haskellPackages.greenclip
-
-    discord
     xclip
     xdotool
   ]) ++ (lib.optionals isDarwin [
@@ -110,6 +88,7 @@ in
     #initExtra = builtins.readFile ./bashrc;
 
     shellAliases = {
+      bbka = lib.getExe pkgs.babashka;
       ga = "git add";
       gc = "git commit";
       gco = "git checkout";
@@ -135,6 +114,7 @@ in
   programs.fish = {
     enable = true;
     shellAliases = {
+      bbka = lib.getExe pkgs.babashka;
       python = "python3";
       ga = "git add";
       gd = "git diff";
@@ -170,7 +150,7 @@ in
     ];
   };
 
-  
+
 
   # bob the fish activation
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
@@ -196,7 +176,7 @@ in
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.yank;
-        extraConfig = '' 
+        extraConfig = ''
           set -g @yank_selection 'primary'
           bind-key -T copy-mode-vi 'v' send -X begin-selection
           bind-key -T copy-mode-vi 'r' send -X rectangle-toggle
@@ -246,8 +226,6 @@ in
 
   services.gpg-agent = {
     # enable = isLinux;
-    pinentryFlavor = "tty";
-
     # cache the keys forever so we don't get asked for a password
     defaultCacheTtl = 31536000;
     maxCacheTtl = 31536000;
