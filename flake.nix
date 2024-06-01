@@ -82,12 +82,13 @@
 
     homeConfigurations = {
       x86_64-linux = mkHomeConfig "x86_64" rec {
-        inherit nixpkgs home-manager overlays;
+        inherit nixpkgs home-manager overlays vscode-server;
         system = "x86_64-linux";
       };
       devdesktop = mkHomeConfig "devdesktop" rec {
-        inherit nixpkgs home-manager overlays;
+        inherit nixpkgs home-manager overlays vscode-server;
         system = "x86_64-linux";
+	user = "mobrienv";
       };
     };
   };
