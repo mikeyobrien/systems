@@ -1,8 +1,18 @@
-user: { nixpkgs, home-manager, system, name, user, overlays, vscode-server, ... }:
-
+user: {
+    nixpkgs,
+    home-manager,
+    system,
+    name,
+    user,
+    overlays,
+    vscode-server,
+    agenix,
+    ...
+}:
 nixpkgs.lib.nixosSystem rec {
   inherit system;
   modules = [
+    agenix.nixosModules.default
     { imports = [ ../modules/nixos/sunshine.nix ]; }
     vscode-server.nixosModules.default
 

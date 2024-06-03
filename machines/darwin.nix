@@ -3,6 +3,11 @@
 {
   nix.useDaemon = true;
 
+  age.secrets.some-secret = {
+      file = ../secrets/some-secret.age;
+      path = "/home/mobrienv/.some-secretrc";
+  };
+
   nix.settings = {
     substituters = ["https://mikeyobrien.cachix.org"];
     trusted-public-keys = ["mikeyobrien.cachix.org-1:DzdUUa3CbbH03Fa1BoBKvixdnMr/dKRsTSyFyTP53Ws="];

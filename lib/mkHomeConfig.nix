@@ -1,15 +1,16 @@
-user: { nixpkgs, home-manager, system, user, overlays, vscode-server, ... }:
+user: { nixpkgs, home-manager, system, user, overlays, vscode-server, agenix, ... }:
 
-let 
+let
   pkgs = import nixpkgs { inherit overlays system; config.allowUnfree = true; };
 in
 home-manager.lib.homeManagerConfiguration rec {
   inherit pkgs;
   modules = [
+    agenix.homeModules.default
     vscode-server.homeModules.default
     {
-      imports = [ 
-        ../modules/protonmail-bridge.nix 
+      imports = [
+        ../modules/protonmail-bridge.nix
       ];
 
       home.username = "${user}";

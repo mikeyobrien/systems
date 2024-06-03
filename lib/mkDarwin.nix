@@ -1,10 +1,11 @@
 # This function creates a nix-darwin system.
-name: { darwin, nixpkgs, home-manager, system, user, overlays }:
+name: { darwin, nixpkgs, home-manager, system, user, overlays, agenix }:
 
 darwin.lib.darwinSystem rec {
   inherit system;
 
   modules = [
+    agenix.darwinModules.default
     # Apply our overlays. Overlays are keyed by system type so we have
     # to go through and apply our system type. We do this first so
     # the overlays are available globally.
