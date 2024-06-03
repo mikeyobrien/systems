@@ -31,7 +31,6 @@
     mkHomeConfig = import ./lib/mkHomeConfig.nix;
     overlays = [
       inputs.emacs-overlay.overlay
-
       (final: _prev: {
         unstable = import inputs.nixpkgs-unstable {
           system = final.system;
@@ -44,10 +43,11 @@
       })
     ];
     pkgs = import inputs.nixpkgs {
-        overlays = [
-            inputs.neovim-nightly-overlay.overlay
-        ];
+      overlays = [
+          inputs.neovim-nightly-overlay.overlay
+      ];
     };
+    args = {inherit nixpkgs home-manager overlays vscode-server;};
   in {
     nixosConfigurations = {
       desktop = mkConfig "desktop" rec {
@@ -73,7 +73,7 @@
     };
 
     darwinConfigurations = {
-      m1 = mkDarwin "m1" rec {
+      buce = mkDarwin "buce" rec {
         inherit nixpkgs home-manager overlays darwin;
         system = "aarch64-darwin";
         user = "mobrienv";

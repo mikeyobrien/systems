@@ -3,9 +3,15 @@
 start-at-login = true
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
-#accordian-padding = 50
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
+
+gaps.inner.horizontal = 6
+gaps.inner.vertical =   6
+gaps.outer.left =       10
+gaps.outer.bottom =     10
+gaps.outer.top =        10
+gaps.outer.right =      10
 
 [mode.main.binding]
 alt-enter = 'exec-and-forget open -n /etc/profiles/per-user/mobrienv/bin/alacritty'
@@ -86,7 +92,7 @@ if.during-aerospace-startup = true
 
 # Floating
 [[on-window-detected]]
-if.app-name-regex-substring = 'Finder'
+if.app-id = 'com.app.finder'
 run = 'layout floating'
 
 [[on-window-detected]]
@@ -99,7 +105,7 @@ run = 'layout floating'
 
 # B - Browser - workspace
 [[on-window-detected]]
-if.app-name-regex-substring = 'Firefox'
+if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace B'
 
 # E - Editor workspace
@@ -122,9 +128,8 @@ if.app-name-regex-substring = 'Alacritty'
 run = 'move-node-to-workspace T'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'iTerm2'
+if.app-id = 'com.googlecode.iterm2'
 run = 'move-node-to-workspace T'
-
 
 # S - Social
 [[on-window-detected]]
@@ -134,4 +139,3 @@ run = 'move-node-to-workspace S'
 [[on-window-detected]]
 if.app-name-regex-substring = 'Slack'
 run = 'move-node-to-workspace S'
-

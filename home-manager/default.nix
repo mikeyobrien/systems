@@ -4,10 +4,9 @@ let
   isLinux = pkgs.stdenv.isLinux;
 in
 {
-  imports = [ 
-    ../modules/protonmail-bridge.nix 
+  imports = [
+    ../modules/protonmail-bridge.nix
   ];
-
 
   xdg.enable = true;
   home.sessionVariables = {
@@ -20,6 +19,9 @@ in
 
   xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
+  home.file.".aerospace.toml" = {
+      text = builtins.readFile ./aerospace.toml;
+  };
 
   home.packages = with pkgs; [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
