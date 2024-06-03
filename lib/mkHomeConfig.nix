@@ -6,7 +6,7 @@ in
 home-manager.lib.homeManagerConfiguration rec {
   inherit pkgs;
   modules = [
-    agenix.homeModules.default
+    agenix.homeManagerModules.age
     vscode-server.homeModules.default
     {
       imports = [
