@@ -28,6 +28,7 @@ in
     jq
     fd
     ripgrep
+    cachix
     babashka
     lua
     expect
