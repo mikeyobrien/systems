@@ -9,6 +9,7 @@ home-manager.lib.homeManagerConfiguration rec {
     agenix.homeManagerModules.age
     vscode-server.homeModules.default
     {
+      nixpkgs.overlays = overlays;
       imports = [
         ../modules/protonmail-bridge.nix
       ];

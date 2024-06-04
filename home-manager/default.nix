@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 { config, pkgs, lib, ... }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
@@ -5,6 +7,8 @@ let
 in
 {
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+    (import ./modules/nixvim { inherit inputs pkgs; })
     ../modules/protonmail-bridge.nix
   ];
 
@@ -132,10 +136,13 @@ in
       ntfycmd = "curl -d \"success\" https://ntfy.mikeyobrien.com/testing || curl -d \"failure\" https://ntfy.mikeyobrien.com/testing";
       #emacs = "${pkgs.emacs-git}/Applications/Emacs.app/Contents/MacOS/Emacs";
     };
+    # This is necessary to run mason downloaded LSPs 
+    # https://www.reddit.com/r/NixOS/comments/13uc87h/comment/kgraua7/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
     interactiveShellInit = lib.strings.concatStrings (lib.strings.intersperse "\n" [
       (builtins.readFile ./fish.config)
       "set -g SHELL ${pkgs.fish}/bin/fish"
       "set -gx PATH $PATH $HOME/bin"
+      "set -g NIX_LD $(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents \"${pkgs.stdenv.cc}/nix-support/dynamic-linker\"; in NIX_LD')"
     ]);
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
@@ -206,13 +213,13 @@ in
     };
   };
 
-  programs.neovim = {
-    enable = true;
-    withPython3 = true;
-    viAlias = true;
-    vimAlias = true;
-    #extraLuaConfig = builtins.readFile ../dotfiles/nvim/init.lua;
-  };
+  # programs.neovim = {
+  #   enable = true;
+  #   package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  #   withPython3 = true;
+  #   viAlias = true;
+  #   vimAlias = true;
+  # };
 
   programs.direnv = {
     enable = true;

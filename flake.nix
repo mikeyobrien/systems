@@ -28,6 +28,11 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
 
@@ -39,6 +44,7 @@
     mkHomeConfig = import ./lib/mkHomeConfig.nix;
     overlays = [
       inputs.emacs-overlay.overlay
+      inputs.neovim-nightly-overlay.overlays.default
       (final: _prev: {
         unstable = import inputs.nixpkgs-unstable {
           system = final.system;
@@ -50,11 +56,7 @@
         fcitx-engines = final.fcitx5;
       })
     ];
-    pkgs = import inputs.nixpkgs {
-      overlays = [
-          inputs.neovim-nightly-overlay.overlay
-      ];
-    };
+
     args = {inherit nixpkgs home-manager overlays vscode-server;};
   in {
     nixosConfigurations = {
@@ -66,7 +68,7 @@
      };
      
      moss = mkConfig "moss" rec {
-        inherit nixpkgs home-manager overlays vscode-server agenix;
+        inherit nixpkgs overlays inputs;
         system = "x86_64-linux";
         name = "moss";
         user = "mobrienv";
@@ -103,7 +105,7 @@
       devdesktop = mkHomeConfig "devdesktop" rec {
         inherit nixpkgs home-manager overlays vscode-server agenix;
         system = "x86_64-linux";
-	user = "mobrienv";
+	      user = "mobrienv";
       };
     };
   };

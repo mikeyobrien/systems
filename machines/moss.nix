@@ -6,6 +6,10 @@
 
 {
   nix.settings.trusted-users = [ "root" "mobrienv" ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -47,10 +51,16 @@
     pulse.enable = true;
   };
 
-  programs.fish.enable = true;
+  programs.nix-ld.enable = true;
+  programs.fish = {
+    enable = true;
+    
+  };
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
+    gcc
+    zig
     vim
     wget
     gnome.gnome-tweaks

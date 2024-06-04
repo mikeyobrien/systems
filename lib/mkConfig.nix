@@ -1,41 +1,35 @@
 user: {
     nixpkgs,
-    home-manager,
-    system,
-    name,
-    user,
     overlays,
-    vscode-server,
-    agenix,
+    inputs,
+    system,
+    user,
+    name,
     ...
 }:
 nixpkgs.lib.nixosSystem rec {
   inherit system;
   modules = [
-    agenix.nixosModules.default
-    { imports = [ ../modules/nixos/sunshine.nix ]; }
-    vscode-server.nixosModules.default
-
-    # Apply our overlays. Overlays are keyed by system type so we have
-    # to go through and apply our system type. We do this first so
-    # the overlays are available globally.
     { nixpkgs.overlays = overlays; }
+    { imports = [ ../modules/nixos/sunshine.nix ]; }
 
+    inputs.vscode-server.nixosModules.default
     ../hardware/${name}.nix
     ../machines/${name}.nix
     ../users/${user}/nixos.nix
-    home-manager.nixosModules.home-manager {
+    inputs.home-manager.nixosModules.home-manager {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.users.${user} = import ../home-manager;
+      home-manager.users.${user} = import ../home-manager {
+        inputs = inputs;
+      };
     }
 
-    # We expose some extra arguments so that our modules can parameterize
-    # better based on these values.
     {
       config._module.args = {
         currentSystemName = name;
         currentSystem = system;
+        inputs = inputs;
       };
     }
   ];
