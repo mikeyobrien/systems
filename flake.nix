@@ -64,6 +64,13 @@
         name = "desktop";
         user = "mobrienv";
      };
+     
+     moss = mkConfig "moss" rec {
+        inherit nixpkgs home-manager overlays vscode-server agenix;
+        system = "x86_64-linux";
+        name = "moss";
+        user = "mobrienv";
+     };
 
      pve-nixos = mkConfig "pve-nixos" rec {
         inherit nixpkgs home-manager overlays vscode-server agenix;

@@ -25,9 +25,11 @@ in
 
   home.packages = with pkgs; [
     (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+
     jq
     fd
     ripgrep
+    obsidian # knowledge management
     cachix
     babashka
     lua
@@ -63,11 +65,7 @@ in
     pinentry_mac
   ]);
 
-  # TODO load user config if passed in, else default
-  xdg.configFile."i3/config".text = builtins.readFile ./i3;
-
   programs.gpg.enable = true;
-
   programs.starship.enable = true;
   programs.alacritty = {
     enable = true;
@@ -75,7 +73,7 @@ in
       env.TERM = "xterm-256color";
       font.size = 14;
       font.normal.family = "JetBrainsMono Nerd Font";
-      key_bindings = [
+      keyboard.bindings = [
         { key = "K"; mods = "Command"; chars = "ClearHistory"; }
         { key = "V"; mods = "Command"; action = "Paste"; }
         { key = "C"; mods = "Command"; action = "Copy"; }
@@ -85,7 +83,6 @@ in
       ];
     };
   };
-
 
   programs.bash = {
     enable = false;
@@ -209,11 +206,6 @@ in
     };
   };
 
-  #home.file."Developer/lombok.jar" = {
-  #  target = "${pkgs.lombok}/share/java/lombok.jar";
-  #  type = "symlink";
-  #};
-
   programs.neovim = {
     enable = true;
     withPython3 = true;
@@ -237,17 +229,6 @@ in
     maxCacheTtl = 31536000;
   };
 
-  services.polybar = {
-    enable = isLinux;
-    package = pkgs.polybar.override {
-      i3Support = true;
-      alsaSupport = true;
-      iwSupport = true;
-      githubSupport = true;
-    };
-    config = ./polybar.ini;
-    script = "polybar example &";
-  };
   services.protonmail-bridge.enable = isLinux;
 
   home.stateVersion = "22.11";

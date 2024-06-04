@@ -12,7 +12,4 @@
     hashedPassword = "$6$h7nrbcXumdWOMzVA$x0CdnTLQbUi1mpekKER.mYmvSqUkx2ySI6UL7V1X3z70c.Hicjn4EkcHI3MkuCHpf080J9jnjnG2W9pgGa24j/";
     openssh.authorizedKeys.keys = [];
   };
-  # nixpkgs.overlays = import ../../lib/overlays.nix ++ [
-  #  (import ./vim.nix)
-  # ];
 }
