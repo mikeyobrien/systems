@@ -15,22 +15,22 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "amdgpu" ];
 
-  networking.hostName = "moss";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "moss";
+    networkmanager.enable = true;
+    useDHCP = false;
+    interfaces = {
+        enp14s0.ipv4.addresses = [{
+            address = "10.10.10.2";    
+            prefixLength = 23;
+        }];
+    };
+    defaultGateway = "10.10.10.1";
+    nameservers = [ "10.10.10.1" ];
+  };
+
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
 
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "amdgpu" ];
