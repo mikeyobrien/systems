@@ -41,16 +41,9 @@
   };
 
   outputs = inputs @ {
-    self,
     nixpkgs,
-    nixpkgs-unstable,
     home-manager,
-    darwin,
-    nixos-wsl,
-    emacs-overlay,
-    flake-utils,
     vscode-server,
-    agenix,
     ...
   }: let
     mkConfig = import ./lib/mkConfig.nix;

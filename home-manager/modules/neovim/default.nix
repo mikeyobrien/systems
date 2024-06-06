@@ -3,9 +3,13 @@
   pkgs,
   ...
 }: {
-  imports = [ 
-    ./keymaps.nix 
-    ./telescope.nix 
+  imports = [
+    ./keymaps.nix
+    ./telescope.nix
+    ./lsp.nix
+    ./lazy.nix
+    ./conform.nix
+    ./trouble.nix
   ];
   home.shellAliases.v = "nvim";
   programs.nixvim = {
@@ -22,7 +26,7 @@
     extraPackages = with pkgs; [
       tree-sitter
     ];
-   
+
     opts = {
       number = true;
       relativenumber = true;

@@ -3,7 +3,7 @@
     plugins.lazy.enable = true;
     plugins.lazy.plugins = [
       {
-        pkg = pkgs.vimPlugins.vim-lspconfig;
+        pkg = pkgs.vimPlugins.nvim-lspconfig;
         dependencies = with pkgs.vimPlugins; [
           cmp-nvim-lsp
           cmp-buffer
@@ -14,7 +14,7 @@
           cmp_luasnip
           fidget-nvim
         ];
-        config = builtins.readFile ./lsp.lua;
+        config = builtins.readFile ./lua/lsp.lua;
       }
     ];
   };

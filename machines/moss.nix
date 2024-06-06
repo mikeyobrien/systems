@@ -22,17 +22,6 @@ in {
   networking = {
     hostName = "moss";
     networkmanager.enable = true;
-    useDHCP = false;
-    interfaces = {
-      enp14s0.ipv4.addresses = [
-        {
-          address = "10.10.10.2";
-          prefixLength = 23;
-        }
-      ];
-    };
-    defaultGateway = "10.10.10.1";
-    nameservers = ["10.10.10.1"];
   };
 
   time.timeZone = "America/Chicago";
@@ -65,6 +54,7 @@ in {
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     inputs.alejandra.defaultPackage.${system}
+    nix-prefetch-scripts
     nixpkgs-fmt
     lgtv
     gcc
@@ -98,22 +88,20 @@ in {
 
   systemd.services.lgtvScreenOff = {
     enable = true;
-    description = "Run command on suspend";
-    before = ["sleep.target"];
+    description = "Turn lgtv screen off suspend";
+    before = ["suspend.target"];
     serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${lgtv} --ssl screenOff";
+      ExecStart = "${lgtv}/bin/lgtv --ssl screenOff";
       User = "mobrienv";
     };
   };
 
   systemd.services.lgtvScreenOn = {
     enable = true;
-    description = "Run command on wake";
+    description = "Turn lgtv screen on on wake";
     after = ["suspend.target"];
     serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${lgtv} --ssl screenOn";
+      ExecStart = "${lgtv}/bin/lgtv --ssl screenOn";
       User = "mobrienv";
     };
   };
@@ -124,7 +112,11 @@ in {
     enableSSHSupport = true;
   };
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    permitRootLogin = "no";
+  };
+
   networking.firewall.enable = false;
 
   system.stateVersion = "24.05"; # Did you read the comment?
