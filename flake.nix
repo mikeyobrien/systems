@@ -17,8 +17,8 @@
     };
 
     haumea = {
-        url = "github:nix-community/haumea/v0.2.2";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/haumea/v0.2.2";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     agenix.url = "github:ryantm/agenix";
@@ -33,11 +33,26 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    alejandra = {
+      url = "github:kamadorueda/alejandra/3.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, darwin, nixos-wsl, emacs-overlay, flake-utils, vscode-server, agenix, ... }:
-  let
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    home-manager,
+    darwin,
+    nixos-wsl,
+    emacs-overlay,
+    flake-utils,
+    vscode-server,
+    agenix,
+    ...
+  }: let
     mkConfig = import ./lib/mkConfig.nix;
     mkWsl = import ./lib/mkWsl.nix;
     mkDarwin = import ./lib/mkDarwin.nix;
@@ -65,28 +80,28 @@
         system = "x86_64-linux";
         name = "desktop";
         user = "mobrienv";
-     };
-     
-     moss = mkConfig "moss" rec {
+      };
+
+      moss = mkConfig "moss" rec {
         inherit nixpkgs overlays inputs;
         system = "x86_64-linux";
         name = "moss";
         user = "mobrienv";
-     };
+      };
 
-     pve-nixos = mkConfig "pve-nixos" rec {
+      pve-nixos = mkConfig "pve-nixos" rec {
         inherit nixpkgs home-manager overlays vscode-server agenix;
         system = "x86_64-linux";
         name = "pve-nixos";
         user = "mobrienv";
-     };
+      };
 
-     wsl = mkWsl "wsl" rec {
+      wsl = mkWsl "wsl" rec {
         inherit nixpkgs nixos-wsl home-manager overlays vscode-server agenix;
         system = "x86_64-linux";
         name = "wsl";
         user = "mobrienv";
-     };
+      };
     };
 
     darwinConfigurations = {
@@ -105,7 +120,7 @@
       devdesktop = mkHomeConfig "devdesktop" rec {
         inherit nixpkgs home-manager overlays vscode-server agenix;
         system = "x86_64-linux";
-	      user = "mobrienv";
+        user = "mobrienv";
       };
     };
   };

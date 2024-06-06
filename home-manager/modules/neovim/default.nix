@@ -1,44 +1,89 @@
-{inputs, pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [];
-
   home.shellAliases.v = "nvim";
-
   programs.nixvim = {
     enable = true;
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
 
     defaultEditor = true;
+    luaLoader.enable = true;
 
     viAlias = true;
     vimAlias = true;
+    globals.mapleader = " ";
 
-    luaLoader.enable = true;
+    keymaps = [
+      {
+        key = "<C-d>";
+        action = "<C-d>zz";
+      }
+      {
+        key = "<C-u>";
+        action = "<C-u>zz";
+      }
+      {
+        key = "<leader>f";
+        action = "<cmd>lua vim.lsp.buf.format()<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>g";
+        action = "<cmd>help<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>pv";
+        action = "<cmd>lua vim.cmd.Ex()<CR>";
+      }
+    ];
+
+    opts = {
+      number = true;
+      relativenumber = true;
+      signcolumn = "yes";
+      ignorecase = true;
+      smartcase = true;
+
+      # Tab defaults (might get overwritten by an LSP server)
+      tabstop = 4;
+      shiftwidth = 4;
+      softtabstop = 4;
+      expandtab = true;
+      smarttab = true;
+
+      clipboard = "unnamedplus";
+      ruler = true;
+      scrolloff = 5;
+    };
 
     colorschemes.tokyonight.enable = true;
-    globals.mapleader = " ";
+    plugins.lsp = {
+      enable = true;
+      servers = {
+        nixd.enable = true;
+        lua-ls.enable = true;
+      };
+    };
+
+    colorschemes.tokyonight.settings.integrations.treesitter = true;
+    plugins.treesitter = {
+      enable = true;
+    };
+    plugins.treesitter-textobjects = {
+      enable = true;
+    };
+
+    colorschemes.tokyonight.settings.integrations.native_lsp.enabled = true;
     plugins.telescope = {
       enable = true;
       extensions = {
         fzf-native = {
-	  enable = true;
-	};
-	undo = {
-	  enable = true;
-	};
-      };
-      settings = {
-        # Using this instead of the keymaps option, since the viml api has limitations
-        mappings = {
-	  a = { 
-	    "<leader>_".__raw = ''require("telescope.builtin").find_files({})'';
-	    "<leader>/".__raw = ''require("telescope.builtin").live_grep({})'';
-	    "<leader>fr".__raw = ''require("telescope.builtin").oldfiles({})'';
-	    "<leader>bu".__raw = ''Telescope undo'';
-	    "<leader>ps".__raw = ''require("telescope.builtin").grep_string({ search = vim.fn.input("Grep >")})'';
-	    "<leader>pWs".__raw = ''require("telescope.builtin").grep_string({ search = vim.fn.expand("<cWORD>")})'';
-	    "<leader>vh".__raw = ''require("telescope.builtin").help_tags({})'';
-	  };
-	};
+          enable = true;
+        };
       };
     };
   };

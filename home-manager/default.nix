@@ -1,14 +1,14 @@
-{ inputs, ... }:
-
-{ config, pkgs, lib, ... }:
-let
+{inputs, ...}: {
+  pkgs,
+  lib,
+  ...
+}: let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-in
-{
+in {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
-    (import ./modules/nixvim { inherit inputs pkgs; })
+    (import ./modules/neovim {inherit inputs pkgs;})
     ../modules/protonmail-bridge.nix
   ];
 
@@ -21,53 +21,54 @@ in
     PAGER = "less -FirSwX";
   };
 
-  xdg.configFile."polybar/launch.sh".text = builtins.readFile ./launch-polybar.sh;
   xdg.configFile."rofi/config.rasi".text = builtins.readFile ./rofi;
   home.file.".aerospace.toml" = {
-      text = builtins.readFile ./aerospace.toml;
+    text = builtins.readFile ./aerospace.toml;
   };
 
-  home.packages = with pkgs; [
-    (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+  home.packages = with pkgs;
+    [
+      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+      jq
+      fd
+      ripgrep
+      obsidian # knowledge management
+      cachix
+      babashka
+      lua
+      expect
+      htop
+      ripgrep
+      fzf
+      bat
+      nix-direnv
+      yadm
+      grc
+      tree-sitter
+      xsv
+      nodejs
+      pass
+      ispell
+      tree
+      lazygit
+      glow
 
-    jq
-    fd
-    ripgrep
-    obsidian # knowledge management
-    cachix
-    babashka
-    lua
-    expect
-    htop
-    ripgrep
-    fzf
-    bat
-    nix-direnv
-    yadm
-    grc
-    tree-sitter
-    xsv
-    nodejs
-    pass
-    ispell
-    tree
-    lazygit
-    glow
-
-    # rust
-    cargo
-    rustc
-    rust-analyzer
-    git-crypt
-    python3
-    nodePackages.pyright
-
-  ] ++ (lib.optionals isLinux [
-    xclip
-    xdotool
-  ]) ++ (lib.optionals isDarwin [
-    pinentry_mac
-  ]);
+      # rust
+      cargo
+      rustc
+      rust-analyzer
+      git-crypt
+      python3
+      nodePackages.pyright
+    ]
+    ++ (lib.optionals isLinux [
+      xclip
+      xdotool
+      signal-desktop # move this to a module
+    ])
+    ++ (lib.optionals isDarwin [
+      pinentry_mac
+    ]);
 
   programs.gpg.enable = true;
   programs.starship.enable = true;
@@ -78,12 +79,36 @@ in
       font.size = 14;
       font.normal.family = "JetBrainsMono Nerd Font";
       keyboard.bindings = [
-        { key = "K"; mods = "Command"; chars = "ClearHistory"; }
-        { key = "V"; mods = "Command"; action = "Paste"; }
-        { key = "C"; mods = "Command"; action = "Copy"; }
-        { key = "Key0"; mods = "Command"; action = "ResetFontSize"; }
-        { key = "Equals"; mods = "Command"; action = "IncreaseFontSize"; }
-        { key = "Minus"; mods = "Command"; action = "DecreaseFontSize"; }
+        {
+          key = "K";
+          mods = "Command";
+          chars = "ClearHistory";
+        }
+        {
+          key = "V";
+          mods = "Command";
+          action = "Paste";
+        }
+        {
+          key = "C";
+          mods = "Command";
+          action = "Copy";
+        }
+        {
+          key = "Key0";
+          mods = "Command";
+          action = "ResetFontSize";
+        }
+        {
+          key = "Equals";
+          mods = "Command";
+          action = "IncreaseFontSize";
+        }
+        {
+          key = "Minus";
+          mods = "Command";
+          action = "DecreaseFontSize";
+        }
       ];
     };
   };
@@ -91,7 +116,7 @@ in
   programs.bash = {
     enable = false;
     shellOptions = [];
-    historyControl = [ "ignoredups" "ignorespace" ];
+    historyControl = ["ignoredups" "ignorespace"];
     #initExtra = builtins.readFile ./bashrc;
 
     shellAliases = {
@@ -136,7 +161,7 @@ in
       ntfycmd = "curl -d \"success\" https://ntfy.mikeyobrien.com/testing || curl -d \"failure\" https://ntfy.mikeyobrien.com/testing";
       #emacs = "${pkgs.emacs-git}/Applications/Emacs.app/Contents/MacOS/Emacs";
     };
-    # This is necessary to run mason downloaded LSPs 
+    # This is necessary to run mason downloaded LSPs
     # https://www.reddit.com/r/NixOS/comments/13uc87h/comment/kgraua7/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
     interactiveShellInit = lib.strings.concatStrings (lib.strings.intersperse "\n" [
       (builtins.readFile ./fish.config)
@@ -145,9 +170,18 @@ in
       "set -g NIX_LD $(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents \"${pkgs.stdenv.cc}/nix-support/dynamic-linker\"; in NIX_LD')"
     ]);
     plugins = [
-      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-      { name = "fzf"; src = pkgs.fishPlugins.fzf-fish.src; }
-      { name = "bass"; src = pkgs.fishPlugins.bass.src; }
+      {
+        name = "grc";
+        src = pkgs.fishPlugins.grc.src;
+      }
+      {
+        name = "fzf";
+        src = pkgs.fishPlugins.fzf-fish.src;
+      }
+      {
+        name = "bass";
+        src = pkgs.fishPlugins.bass.src;
+      }
       # {
       #   name = "bobthefish";
       #   src = pkgs.fetchFromGitHub {
@@ -160,8 +194,6 @@ in
     ];
   };
 
-
-
   # bob the fish activation
   xdg.configFile."fish/conf.d/plugin-bobthefish.fish".text = lib.mkAfter ''
     set -g theme_newline_cursor yes
@@ -173,7 +205,7 @@ in
       source $f
     end
 
-    '';
+  '';
 
   programs.tmux = {
     enable = true;
@@ -205,7 +237,7 @@ in
     userName = "mikeyobrien";
     userEmail = "hmobrienv@gmail.com";
     extraConfig = {
-      safe.directory = [ "*" ];
+      safe.directory = ["*"];
     };
     aliases = {
       prettylog = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(r) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
@@ -213,13 +245,13 @@ in
     };
   };
 
-  # programs.neovim = {
-  #   enable = true;
-  #   package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
-  #   withPython3 = true;
-  #   viAlias = true;
-  #   vimAlias = true;
-  # };
+  programs.neovim = {
+    enable = false;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    withPython3 = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   programs.direnv = {
     enable = true;

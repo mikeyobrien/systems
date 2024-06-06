@@ -1,10 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   # bash script to let dbus know about important env variables and
   # propagate them to relevent services run at the end of sway config
   # see
@@ -17,10 +18,10 @@ let
     executable = true;
 
     text = ''
-  dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-  systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-  systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-      '';
+      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+      systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+      systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+    '';
   };
 
   # currently, there is some friction between sway and gtk:
@@ -30,20 +31,19 @@ let
   # using the XDG_DATA_DIR environment variable
   # run at the end of sway config
   configure-gtk = pkgs.writeTextFile {
-      name = "configure-gtk";
-      destination = "/bin/configure-gtk";
-      executable = true;
-      text = let
-        schema = pkgs.gsettings-desktop-schemas;
-        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in ''
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-        gnome_schema=org.gnome.desktop.interface
-        gsettings set $gnome_schema gtk-theme 'Dracula'
-        '';
+    name = "configure-gtk";
+    destination = "/bin/configure-gtk";
+    executable = true;
+    text = let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in ''
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme 'Dracula'
+    '';
   };
-in
-{
+in {
   nix.settings = {
     substituters = ["https://mikeyobrien.cachix.org"];
     trusted-public-keys = ["mikeyobrien.cachix.org-1:DzdUUa3CbbH03Fa1BoBKvixdnMr/dKRsTSyFyTP53Ws="];
@@ -53,7 +53,7 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   virtualisation.docker.enable = true;
 
@@ -95,7 +95,7 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = ["nvidia"];
     desktopManager = {
       xterm.enable = false;
       plasma5.enable = true;
@@ -118,51 +118,50 @@ in
   services.xrdp.defaultWindowManager = "${pkgs.icewm}/bin/icewm";
   services.xrdp.openFirewall = true;
 
-
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.enable = true;
   hardware.pulseaudio.support32Bit = true;
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-     vim 
-     wget
-     docker-compose
-     gcc
-     bintools
-     wayland
-     alacritty # gpu accelerated terminal
-     rofi
-     xclip
-     nomacs # image viewer
-     cura
-     cifs-utils
+    vim
+    wget
+    docker-compose
+    gcc
+    bintools
+    wayland
+    alacritty # gpu accelerated terminal
+    rofi
+    xclip
+    nomacs # image viewer
+    cura
+    cifs-utils
 
-     ta-lib # technical analysis
-     gcc-unwrapped
+    ta-lib # technical analysis
+    gcc-unwrapped
 
-     lutris
-     (wineWowPackages.full.override {
-       wineRelease = "staging";
-       mingwSupport = true;
-     })
-     winetricks
-     vulkan-tools
+    lutris
+    (wineWowPackages.full.override {
+      wineRelease = "staging";
+      mingwSupport = true;
+    })
+    winetricks
+    vulkan-tools
 
-     python311
-     python311Packages.pip-tools
-     python311Packages.setuptools
+    python311
+    python311Packages.pip-tools
+    python311Packages.setuptools
   ];
 
   services.tailscale.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 8384 ];
-  networking.firewall.allowedUDPPorts = [ 41641 ];
+  networking.firewall.allowedTCPPorts = [8384];
+  networking.firewall.allowedUDPPorts = [41641];
 
   fonts = {
     fontDir.enable = true;
     fonts = [
-      (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+      (pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
       pkgs.fira-code
       pkgs.jetbrains-mono
     ];
@@ -179,7 +178,6 @@ in
   services.avahi.nssmdns = true;
   services.vscode-server.enable = true;
 
-  
   services.syncthing = {
     enable = true;
     dataDir = "/home/mobrienv";
@@ -205,5 +203,4 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }

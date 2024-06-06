@@ -1,22 +1,34 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.programs.sunshine;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.programs.sunshine;
+in {
   options.programs.sunshine = with lib; {
     enable = mkEnableOption "sunshine";
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ 
+    environment.systemPackages = with pkgs; [
       binutils
       ffmpeg
       xorg.xrandr
     ];
 
-    networking.firewall.allowedTCPPortRanges = [{ from = 47984; to = 48010; }];
-    networking.firewall.allowedUDPPortRanges = [{ from = 47998; to = 48010; }];
+    networking.firewall.allowedTCPPortRanges = [
+      {
+        from = 47984;
+        to = 48010;
+      }
+    ];
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = 47998;
+        to = 48010;
+      }
+    ];
     security.wrappers.sunshine = {
       owner = "root";
       group = "root";
@@ -28,10 +40,9 @@ in
       wantedBy = ["graphical-session.target"];
       startLimitBurst = 5;
       startLimitIntervalSec = 500;
-      partOf = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-
+      partOf = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
 
       serviceConfig = {
         ExecStart = "${config.security.wrapperDir}/sunshine";

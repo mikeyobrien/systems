@@ -1,11 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  nix.settings.trusted-users = [ "root" "mobrienv" ];
+  inputs,
+  config,
+  pkgs,
+  ...
+}: let
+  lgtv = pkgs.callPackage ../pkgs/lgwebosremote/lgwebosremote.nix {};
+in {
+  nix.settings.trusted-users = ["root" "mobrienv"];
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -13,27 +17,29 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = ["amdgpu"];
 
   networking = {
     hostName = "moss";
     networkmanager.enable = true;
     useDHCP = false;
     interfaces = {
-        enp14s0.ipv4.addresses = [{
-            address = "10.10.10.2";    
-            prefixLength = 23;
-        }];
+      enp14s0.ipv4.addresses = [
+        {
+          address = "10.10.10.2";
+          prefixLength = 23;
+        }
+      ];
     };
     defaultGateway = "10.10.10.1";
-    nameservers = [ "10.10.10.1" ];
+    nameservers = ["10.10.10.1"];
   };
 
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  services.xserver.videoDrivers = ["amdgpu"];
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.xkb = {
@@ -54,36 +60,63 @@
   programs.nix-ld.enable = true;
   programs.fish = {
     enable = true;
-    
   };
   programs.firefox.enable = true;
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
+    inputs.alejandra.defaultPackage.${system}
+    nixpkgs-fmt
+    lgtv
     gcc
     zig
     vim
     wget
     gnome.gnome-tweaks
+    gnome.adwaita-icon-theme
   ];
 
-environment.gnome.excludePackages = (with pkgs; [
-  gnome-photos
-  gnome-tour
-  gedit
-]) ++ (with pkgs.gnome; [
-  cheese # webcam tool
-  gnome-music
-  gnome-terminal
-  epiphany # web browser
-  geary # email reader
-  evince # document viewer
-  gnome-characters
-  totem # video player
-  tali # poker game
-  iagno # go game
-  hitori # sudoku game
-  atomix # puzzle game
-]);
+  environment.gnome.excludePackages =
+    (with pkgs; [
+      gnome-photos
+      gnome-tour
+      gedit
+    ])
+    ++ (with pkgs.gnome; [
+      cheese # webcam tool
+      gnome-music
+      gnome-terminal
+      epiphany # web browser
+      geary # email reader
+      evince # document viewer
+      gnome-characters
+      totem # video player
+      tali # poker game
+      iagno # go game
+      hitori # sudoku game
+      atomix # puzzle game
+    ]);
+
+  systemd.services.lgtvScreenOff = {
+    enable = true;
+    description = "Run command on suspend";
+    before = ["sleep.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${lgtv} --ssl screenOff";
+      User = "mobrienv";
+    };
+  };
+
+  systemd.services.lgtvScreenOn = {
+    enable = true;
+    description = "Run command on wake";
+    after = ["suspend.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${lgtv} --ssl screenOn";
+      User = "mobrienv";
+    };
+  };
 
   programs.mtr.enable = true;
   programs.gnupg.agent = {

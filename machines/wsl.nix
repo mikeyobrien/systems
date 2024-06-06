@@ -1,6 +1,12 @@
-{ lib, pkgs, config, modulesPath, user, defaultUser, ... }:
-
 {
+  lib,
+  pkgs,
+  config,
+  modulesPath,
+  user,
+  defaultUser,
+  ...
+}: {
   wsl = {
     enable = true;
     wslConf.automount.root = "/mnt";
@@ -28,14 +34,14 @@
     wayland
     firefox
 
-    ((emacsPackagesFor emacsPgtk).emacsWithPackages (epkgs:
-      with epkgs;
-      [
-        sqlite3
-        pdf-tools
-        org-pdftools
-        vterm
-      ]
+    ((emacsPackagesFor emacsPgtk).emacsWithPackages (
+      epkgs:
+        with epkgs; [
+          sqlite3
+          pdf-tools
+          org-pdftools
+          vterm
+        ]
     ))
 
     # rust
@@ -57,4 +63,3 @@
   security.polkit.enable = true;
   system.stateVersion = "22.11";
 }
-

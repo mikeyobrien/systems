@@ -1,11 +1,14 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   nix.useDaemon = true;
 
   age.secrets.some-secret = {
-      file = ../secrets/some-secret.age;
-      path = "/home/mobrienv/.some-secretrc";
+    file = ../secrets/some-secret.age;
+    path = "/home/mobrienv/.some-secretrc";
   };
 
   nix.settings = {
@@ -19,7 +22,6 @@
     '';
   };
 
-
   services.nix-daemon.enable = true;
 
   programs.zsh.enable = true;
@@ -29,7 +31,7 @@
       . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
     fi
     # End Nix
-    '';
+  '';
 
   programs.fish.enable = true;
   programs.fish.shellInit = ''
@@ -38,11 +40,11 @@
       source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
     end
     # End Nix
-    '';
+  '';
 
   fonts.fontDir.enable = false;
   fonts.fonts = [
-    (pkgs.nerdfonts.override { fonts = ["FiraCode" "JetBrainsMono"]; })
+    (pkgs.nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
     pkgs.roboto
   ];
 
@@ -74,5 +76,4 @@
   environment.systemPackages = with pkgs; [
     cachix
   ];
-
 }

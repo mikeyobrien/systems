@@ -1,14 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, ... }:
-
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.cudaSupport = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   virtualisation.docker = {
     enable = true;
@@ -20,7 +21,7 @@
   boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
 
   networking.hostName = "nixos"; # Define your hostname.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -69,7 +70,7 @@
   programs.zsh.enable = true;
   users.users.mobrienv = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "input" "video" "sound" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "networkmanager" "input" "video" "sound" "docker"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       firefox
       tree
@@ -80,18 +81,18 @@
 
   services.vscode-server.enable = true;
   services = {
-      syncthing = {
-          enable = true;
-          user = "mobrienv";
-          dataDir = "/home/mobrienv/";    # Default folder for new synced folders
-          configDir = "/home/mobrienv/.config/syncthing";   # Folder for Syncthing's settings and keys
-      };
+    syncthing = {
+      enable = true;
+      user = "mobrienv";
+      dataDir = "/home/mobrienv/"; # Default folder for new synced folders
+      configDir = "/home/mobrienv/.config/syncthing"; # Folder for Syncthing's settings and keys
+    };
   };
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
-    zlib 
-    libgcc 
+    zlib
+    libgcc
   ];
 
   # List packages installed in system profile. To search, run:
@@ -118,25 +119,24 @@
   services.openssh.enable = true;
 
   networking.firewall.enable = false;
-  networking.firewall.allowedTCPPorts = [ 
-    22000 
-    8384 
-    3000 
+  networking.firewall.allowedTCPPorts = [
+    22000
+    8384
+    3000
     5000 # Frigate
     8554 # rtsp?
     11080 # Scrypted
   ];
-  networking.firewall.allowedUDPPorts = [ 
+  networking.firewall.allowedUDPPorts = [
     8554
-    21027 
+    21027
   ];
 
   fileSystems."/mnt/unraid" = {
     device = "unraid.local:/mnt/user/nixos";
     fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" "hard" "intr" "rw" ];
+    options = ["x-systemd.automount" "noauto" "hard" "intr" "rw"];
   };
 
   system.stateVersion = "24.05"; # Did you read the comment?
 }
-
